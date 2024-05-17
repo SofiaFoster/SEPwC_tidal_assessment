@@ -10,17 +10,22 @@ import uptide
 # Read in the tidal data files
 def read_tidal_data(filename):
     
+# Skip to where data starts (row 12)
+# Assign column names
     df = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11, names=["Index", "Date", "Time", "Sea Level", "Sea Level B"])
     
-
+# Concatenate date and time to DateTime
     df["DateTime"] = pd.to_datetime(df["Date"] + " " + df["Time"], format="%Y/%m/%d %H:%M:%S")
-    
+
+# Set DateTime column as index of DataFrame    
     df.set_index('DateTime', inplace=True)
-    
+
+# Replace values that end in M,N,T with NaN    
     df.replace(to_replace=".*M$",value={'Sea Level':np.nan},regex=True,inplace=True)
     df.replace(to_replace=".*N$",value={'Sea Level':np.nan},regex=True,inplace=True)
     df.replace(to_replace=".*T$",value={'Sea Level':np.nan},regex=True,inplace=True)
-    
+ 
+# Convert data type to float
     df["Sea Level"] = df["Sea Level"].astype(float)    
     
     return df
@@ -28,6 +33,13 @@ def read_tidal_data(filename):
 
 def extract_single_year_remove_mean(year, data):
    
+# Extract data for a specified year
+
+
+# Calculate mean sea level
+
+
+# Remove the mean from sea level
 
     return 
 
@@ -40,6 +52,7 @@ def extract_section_remove_mean(start, end, data):
 
 def join_data(data1, data2):
     
+# Concatenate data2 and data1 in a new DataFrame
     data3 = pd.concat([data2, data1])
 
     return data3
