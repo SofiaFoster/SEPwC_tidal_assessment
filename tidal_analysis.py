@@ -2,11 +2,30 @@
 
 # import the modules you need here
 import argparse
+import numpy as np
+import pandas as pd
+from datetime import datetime
+import uptide
 
+# Read in the tidal data files
 def read_tidal_data(filename):
-
-    return 0
     
+    df = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11, names=["Index", "Date", "Time", "Sea Level", "Sea Level B"])
+    
+
+    df["DateTime"] = pd.to_datetime(df["Date"] + " " + df["Time"], format="%Y/%m/%d %H:%M:%S")
+    
+    df.set_index('DateTime', inplace=True)
+    
+    df.replace(to_replace=".*M$",value={'Sea Level':np.nan},regex=True,inplace=True)
+    df.replace(to_replace=".*N$",value={'Sea Level':np.nan},regex=True,inplace=True)
+    df.replace(to_replace=".*T$",value={'Sea Level':np.nan},regex=True,inplace=True)
+    
+    df["Sea Level"] = df["Sea Level"].astype(float)    
+    
+    return df
+    
+
 def extract_single_year_remove_mean(year, data):
    
 
@@ -20,8 +39,10 @@ def extract_section_remove_mean(start, end, data):
 
 
 def join_data(data1, data2):
+    
+    data3 = pd.concat([data2, data1])
 
-    return 
+    return data3
 
 
 
@@ -45,7 +66,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
                      prog="UK Tidal analysis",
                      description="Calculate tidal constiuents and RSL from tide gauge data",
-                     epilog="Copyright 2024, Jon Hill"
+                     epilog="Copyright 2024, Sofia Foster"
                      )
 
     parser.add_argument("directory",
@@ -58,6 +79,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     dirname = args.directory
     verbose = args.verbose
+    
+    read_tidal_data(dirname)
+    
+    
     
 
 
