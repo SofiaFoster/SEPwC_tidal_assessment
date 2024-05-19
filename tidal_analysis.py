@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# import the modules you need here
+# Import needed modules
 import argparse
 import numpy as np
 import pandas as pd
@@ -11,11 +11,16 @@ import uptide
 def read_tidal_data(filename):
     
 # Skip to where data starts (row 12)
+    df = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11)
+    
 # Assign column names
-    df = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11, names=["Index", "Date", "Time", "Sea Level", "Sea Level B"])
+    df.rename(columns={0: "Index", 1: "Date", 2: "Time", 3: "Sea Level", 4: "Sea Level B"}, inplace=True)
     
 # Concatenate date and time to DateTime
-    df["DateTime"] = pd.to_datetime(df["Date"] + " " + df["Time"], format="%Y/%m/%d %H:%M:%S")
+    DateTime = df["Date"] + " " + df["Time"]
+    
+# Format into a single string
+    df["DateTime"] = pd.to_datetime(DateTime, format="%Y/%m/%d %H:%M:%S")
 
 # Set DateTime column as index of DataFrame    
     df.set_index('DateTime', inplace=True)
@@ -32,27 +37,32 @@ def read_tidal_data(filename):
     
 
 def extract_single_year_remove_mean(year, data):
+  
+# Define strings for the start and end of the year
+    year_start = str(year) + "-01-01"
+    year_end = str(year) + "-12-31"
    
 # Extract data for a specified year
+    year_data = data.loc[year_start:year_end].copy()
 
+# Calculate the mean sea level
+    mean_sea_level = np.mean(year_data["Sea Level"])
 
-# Calculate mean sea level
+# Subtract the mean from Sea Level data
+    year_data["Sea Level"] -= mean_sea_level
 
-
-# Remove the mean from sea level
-
-    return 
+    return year_data
 
 
 def extract_section_remove_mean(start, end, data):
-
+    
 
     return 
 
 
+# Concatenate data2 and data1 to data3
 def join_data(data1, data2):
     
-# Concatenate data2 and data1 in a new DataFrame
     data3 = pd.concat([data2, data1])
 
     return data3
