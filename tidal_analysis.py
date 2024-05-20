@@ -45,7 +45,7 @@ def extract_single_year_remove_mean(year, data):
 # Extract data for a specified year
     year_data = data.loc[year_start:year_end].copy()
 
-# Calculate the mean sea level
+# Calculate the mean Sea Level
     mean_sea_level = np.mean(year_data["Sea Level"])
 
 # Subtract the mean from Sea Level data
@@ -55,9 +55,17 @@ def extract_single_year_remove_mean(year, data):
 
 
 def extract_section_remove_mean(start, end, data):
-    
+ 
+# Extract data for a specified section
+    section_data = data.loc[start:end].copy()
 
-    return 
+# Calculate the mean Sea Level
+    mean_sea_level = np.mean(section_data["Sea Level"])
+   
+# Subtract the mean from Sea Level data
+    section_data["Sea Level"] -= mean_sea_level
+
+    return section_data
 
 
 # Concatenate data2 and data1 to data3
@@ -68,14 +76,22 @@ def join_data(data1, data2):
     return data3
 
 
-
-def sea_level_rise(data):
-
-                                                     
+def sea_level_rise(data): 
+        
+                              
     return 
+
 
 def tidal_analysis(data, constituents, start_datetime):
 
+    amplitudes = 
+    phases = 
+                  
+    if:
+        
+    elif:
+        
+    else:
 
     return 
 
