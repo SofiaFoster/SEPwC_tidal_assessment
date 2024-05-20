@@ -4,7 +4,7 @@
 import argparse
 import numpy as np
 import pandas as pd
-from scipy import stats
+import scipy.stats as stats
 import matplotlib.dates as dates
 from datetime import datetime
 import uptide
@@ -80,18 +80,18 @@ def join_data(data1, data2):
 
 def sea_level_rise(data): 
 
+# Remove NaN values from data
+    data = data.dropna(subset = ["Sea Level"])  
+
 # Convert index to datetime
-    df.index = pd.to_datetime(df.index)
+    data.index = pd.to_datetime(data.index)
 
 # Assign data to x and y-axis
-    x = dates.date2num(df.index)
+    x = dates.date2num(data.index)
     y = data["Sea Level"]
-  
-# Remove NaN values from data
-    regression_data = data.dropna(subset = ["Sea Level"])
-    
+   
 # Execute linear regression
-    slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x,y)
+    slope, p_value, _, _, _ = stats.linregress(x,y)
 
     return slope, p_value
 
