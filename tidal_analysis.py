@@ -84,14 +84,6 @@ def sea_level_rise(data):
 
 def tidal_analysis(data, constituents, start_datetime):
 
-    amplitudes = 
-    phases = 
-                  
-    if:
-        
-    elif:
-        
-    else:
 
     return 
 
