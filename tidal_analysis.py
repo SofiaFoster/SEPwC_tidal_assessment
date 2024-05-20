@@ -80,13 +80,19 @@ def join_data(data1, data2):
 
 def sea_level_rise(data): 
 
-# Convert index to datetime and datetime to numbers
+# Convert index to datetime
     df.index = pd.to_datetime(df.index)
 
 # Assign data to x and y-axis
     x = dates.date2num(df.index)
     y = data["Sea Level"]
-   
+  
+# Remove NaN values from data
+    regression_data = data.dropna(subset = ["Sea Level"])
+    
+# Execute linear regression
+    slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x,y)
+
     return slope, p_value
 
 
