@@ -7,7 +7,7 @@ import pandas as pd
 import scipy.stats as stats
 import matplotlib.dates as dates
 import pytz
-from datetime import datetime
+import datetime
 import uptide
 
 # Read in the tidal data files
@@ -99,8 +99,8 @@ def sea_level_rise(data):
 
 def tidal_analysis(data, constituents, start_datetime):
 
-    amp = []
-    pha = []
+# Make start_datetime timezone-naive
+    start_datetime = datetime.datetime(1946, 1, 15, 0, 0, 0)
 
 # Create a tides object with a list of the constituents
     tide = uptide.Tides(constituents)
@@ -108,13 +108,25 @@ def tidal_analysis(data, constituents, start_datetime):
 # Set a start time
     tide.set_initial_time(start_datetime)
 
+# Make data index timezone-naive
+    data.index = data.index.tz_localize(None)
+
 # Convert dates to seconds
     seconds_since = (data.index - start_datetime).total_seconds()
     
+# Rewrite for easier use
+    sea_level_data = data["Sea Level"].to_numpy()
+    
+# Remove any NaN values 
+    valid_data = ~pd.isna(sea_level_data)
+    sea_level_data = sea_level_data[valid_data]
+    seconds_since = seconds_since[valid_data]
+
 # Execute harmonic analysis
-    amp, pha = uptide.harmonic_analysis(tide, data["Sea Level"].to_numpy(), seconds_since)
+    amp, pha = uptide.harmonic_analysis(tide, sea_level_data, seconds_since)
 
     return amp, pha
+
 
 def get_longest_contiguous_data(data):
 
