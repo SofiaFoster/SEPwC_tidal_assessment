@@ -2,7 +2,6 @@
 This module contains functions for reading, processing
 and analysing tidal data.
 """
-
 #!/usr/bin/env python3
 
 # Import needed modules
@@ -15,9 +14,10 @@ from matplotlib import dates
 import pytz
 import uptide
 
-# Read in the tidal data files
 def read_tidal_data(filename):
-
+    """
+    Reads in tidal data from file and returns a DataFrame.
+    """
     # Skip to where data starts (row 12)
     data_frame = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11)
 
@@ -53,7 +53,9 @@ def read_tidal_data(filename):
 
 
 def extract_single_year_remove_mean(year, data):
-
+    """
+    Extracts data for a single year and removes the meal sea level.
+    """
 # Define strings for the start and end of the year
     year_start = str(year) + "-01-01"
     year_end = str(year) + "-12-31"
@@ -71,7 +73,9 @@ def extract_single_year_remove_mean(year, data):
 
 
 def extract_section_remove_mean(start, end, data):
-
+    """
+    Extracts a section of data and removes the mean sea level.
+    """
 # Extract data for a specified section
     section_data = data.loc[start:end].copy()
 
@@ -84,15 +88,20 @@ def extract_section_remove_mean(start, end, data):
     return section_data
 
 
-# Concatenate data2 and data1 to data3
 def join_data(data1, data2):
-
+    """
+    Joins two DataFrames containing tidal data.
+    """
+# Concatenate data2 and data1 to data3
     data3 = pd.concat([data2, data1])
 
     return data3
 
 
 def sea_level_rise(data):
+    """
+    Performs linear regression to calculate sea level rise.
+    """
 
 # Remove NaN values from data
     data = data.dropna(subset = ["Sea Level"])
@@ -111,6 +120,9 @@ def sea_level_rise(data):
 
 
 def tidal_analysis(data, constituents, start_datetime):
+    """
+    Performs harmonic analysis on tidal data.
+    """
 
 # Make start_datetime timezone-naive
     start_datetime = datetime.datetime(1946, 1, 15, 0, 0, 0)
@@ -146,6 +158,9 @@ def tidal_analysis(data, constituents, start_datetime):
     return None, None
 
 def get_longest_contiguous_data(data):
+    """
+    Does something.
+    """
 
 
     return
