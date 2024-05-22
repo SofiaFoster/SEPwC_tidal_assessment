@@ -54,7 +54,7 @@ def read_tidal_data(filename):
 
 def extract_single_year_remove_mean(year, data):
     """
-    Extracts data for a single year and removes the meal sea level.
+    Extracts data for a single year and removes the mean sea level.
     """
 # Define strings for the start and end of the year
     year_start = str(year) + "-01-01"
@@ -142,28 +142,24 @@ def tidal_analysis(data, constituents, start_datetime):
 # Rewrite for easier use
     sea_level_data = data["Sea Level"].to_numpy()
 
-# Check if sea_level_data is not None
-    if sea_level_data is not None and len(sea_level_data) > 0:
-
 # Remove any NaN values
-        valid_data = ~pd.isna(sea_level_data)
-        sea_level_data = sea_level_data[valid_data]
-        seconds_since = seconds_since[valid_data]
+    valid_data = ~pd.isna(sea_level_data)
+    sea_level_data = sea_level_data[valid_data]
+    seconds_since = seconds_since[valid_data]
 
 # Execute harmonic analysis
-        amp, pha = uptide.harmonic_analysis(tide, sea_level_data, seconds_since)
+    amp, pha = uptide.harmonic_analysis(tide, sea_level_data, seconds_since)
 
-        return amp, pha
+    return amp, pha
 
-    return None, None
 
 def get_longest_contiguous_data(data):
     """
     Does something.
     """
 
-
     return
+
 
 if __name__ == '__main__':
 
