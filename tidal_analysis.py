@@ -17,6 +17,12 @@ import uptide
 def read_tidal_data(filename):
     """
     Reads in tidal data from file and returns a DataFrame.
+
+    Parameters:
+    filename: Path to tidal data file.
+
+    Returns:
+    pd.DataFrame: DataFrame containing tidal data with date_time index and Sea Level as float.
     """
     # Skip to where data starts (row 12)
     data_frame = pd.read_csv(filename, delim_whitespace=True, header=None, skiprows=11)
@@ -55,6 +61,13 @@ def read_tidal_data(filename):
 def extract_single_year_remove_mean(year, data):
     """
     Extracts data for a single year and removes the mean sea level.
+    
+    Parameters:
+    year: the year data is extracted from.
+    data: DataFrame containing tidal data.
+
+    Returns: 
+    pd.DataFrame: DataFrame with mean sea level removed for specific year.
     """
 # Define strings for the start and end of the year
     year_start = str(year) + "-01-01"
@@ -75,6 +88,14 @@ def extract_single_year_remove_mean(year, data):
 def extract_section_remove_mean(start, end, data):
     """
     Extracts a section of data and removes the mean sea level.
+    
+    parameters:
+    start: start date of data section.
+    end: end date of data section.
+    data: DataFrame containing tidal data.
+
+    Returns:
+    pd.DataFrame: DataFrame with mean sea level removed for section.
     """
 # Extract data for a specified section
     section_data = data.loc[start:end].copy()
@@ -91,6 +112,13 @@ def extract_section_remove_mean(start, end, data):
 def join_data(data1, data2):
     """
     Joins two DataFrames containing tidal data.
+    
+    Parameters:
+    data1: First DataFrame.
+    data2: Second DataFrame.
+
+    Returns:
+    pd.DataFrame: Concatenated DataFrame.
     """
 # Concatenate data2 and data1 to data3
     data3 = pd.concat([data2, data1])
@@ -101,6 +129,12 @@ def join_data(data1, data2):
 def sea_level_rise(data):
     """
     Performs linear regression to calculate sea level rise.
+    
+    Parameters:
+    data: DataFrame containing tidal data.
+
+    Returns:
+    tuple: Slope and p_value from linear regression.
     """
 
 # Remove NaN values from data
@@ -122,6 +156,14 @@ def sea_level_rise(data):
 def tidal_analysis(data, constituents, start_datetime):
     """
     Performs harmonic analysis on tidal data.
+    
+    Parameters:
+    data: DataFrame containing tidal data.
+    constituents: List of tidal constituents.
+    start_datetime: Start datetime of data for analysis.
+
+    Returns:
+    tuple: Amplitudes and phases of tidal constituents.
     """
 
 # Make start_datetime timezone-naive
@@ -143,7 +185,7 @@ def tidal_analysis(data, constituents, start_datetime):
     sea_level_data = data["Sea Level"].to_numpy()
 
 # Remove any NaN values
-    valid_data = ~pd.isna(sea_level_data)
+    valid_data = pd.notna(sea_level_data)
     sea_level_data = sea_level_data[valid_data]
     seconds_since = seconds_since[valid_data]
 
@@ -157,7 +199,6 @@ def get_longest_contiguous_data(data):
     """
     Does something.
     """
-
     return
 
 
