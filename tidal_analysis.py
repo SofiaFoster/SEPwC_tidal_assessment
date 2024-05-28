@@ -198,6 +198,12 @@ def tidal_analysis(data, constituents, start_datetime):
 def get_longest_contiguous_data(data):
     """
     Does something.
+
+    Parameters:
+    data: DataFrame containing tidal data.
+
+    Returns:
+    Something:
     """
     return
 
