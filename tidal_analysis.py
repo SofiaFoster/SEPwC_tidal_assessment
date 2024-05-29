@@ -60,6 +60,7 @@ def read_tidal_data(filename):
 
 def extract_single_year_remove_mean(year, data):
     """
+    Code based on SEPwC Documentation
     Extracts data for a single year and removes the mean sea level.
     
     Parameters:
@@ -155,6 +156,7 @@ def sea_level_rise(data):
 
 def tidal_analysis(data, constituents, start_datetime):
     """
+    Code based on SEPwC Documentation
     Performs harmonic analysis on tidal data.
     
     Parameters:
